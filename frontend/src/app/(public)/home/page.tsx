@@ -1,26 +1,19 @@
 "use client";
 
+import { Product } from "@/lib/types";
 import api from "@/services/api";
 import React from "react";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  createdAt: Date;
-}
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   const loadProducts = async () => {
     try {
+      toast.loading("Carregando products...", { duration: 2000 });
       const { data } = await api.get("/products");
       setProducts(data);
-      toast.success("Products carregados com sucess!");
     } catch (e) {
       console.error(e);
       toast.error("Products carregados com sucess!");
