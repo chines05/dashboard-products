@@ -40,7 +40,8 @@ type Props = {
 };
 
 const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
-  const form = useForm<FormData>({
+  const form = useForm<FormData>();
+  const { handleSubmit, reset, control } = useForm<FormData>({
     resolver: zodResolver(SchemaProduct),
     defaultValues: {
       name: "",
@@ -60,7 +61,7 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
       toast.success(product ? "Product updated!" : "Product created!");
       onSuccess();
       onClose();
-      form.reset();
+      reset();
     } catch (error) {
       toast.error("Ocorreu um erro");
       console.error(error);
@@ -69,25 +70,25 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
 
   useEffect(() => {
     if (!product) {
-      form.reset({
+      reset({
         name: "",
         price: 0,
         description: "",
       });
     } else {
-      form.reset({
+      reset({
         name: product.name,
         price: product.price,
         description: product.description,
       });
     }
-  }, [product, form]);
+  }, [product, reset]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <DialogHeader>
               <DialogTitle>
                 {product ? "Edit product" : "New product"}
@@ -98,7 +99,7 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
             </DialogHeader>
 
             <FormField
-              control={form.control}
+              control={control}
               name="name"
               render={({ field }) => (
                 <FormItem>
@@ -112,7 +113,7 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
             />
 
             <FormField
-              control={form.control}
+              control={control}
               name="price"
               render={({ field }) => (
                 <FormItem>
@@ -131,7 +132,7 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
             />
 
             <FormField
-              control={form.control}
+              control={control}
               name="description"
               render={({ field }) => (
                 <FormItem>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CirclePlusIcon } from "lucide-react";
 import TableProducts from "@/components/table/TableProducts";
 import DialogProduct from "@/components/dialog/DialogProduct";
+import { Card } from "@/components/ui/card";
 
 const ProductsAdmin = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -54,14 +55,16 @@ const ProductsAdmin = () => {
         </Button>
       </div>
 
-      <TableProducts
-        products={products}
-        onEdit={(product) => {
-          setEditingProduct(product);
-          setOpenDialogProduct(true);
-        }}
-        onDelete={handleDelete}
-      />
+      <Card className="mt-8">
+        <TableProducts
+          products={products}
+          onEdit={(product) => {
+            setEditingProduct(product);
+            setOpenDialogProduct(true);
+          }}
+          onDelete={handleDelete}
+        />
+      </Card>
 
       <DialogProduct
         open={openDialogProduct}
