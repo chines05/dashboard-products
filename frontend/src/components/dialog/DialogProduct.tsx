@@ -51,13 +51,13 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await api.post("/products", {
-        name: data.name,
-        price: data.price,
-        description: data.description,
-      });
+      if (product) {
+        await api.put(`/product/${product.id}`, data);
+      } else {
+        await api.post("/products", data);
+      }
 
-      toast.success(product ? "Produto atualizado!" : "Produto criado!");
+      toast.success(product ? "Product updated!" : "Product created!");
       onSuccess();
       onClose();
       form.reset();
@@ -68,14 +68,18 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
   };
 
   useEffect(() => {
-    if (product) {
+    if (!product) {
+      form.reset({
+        name: "",
+        price: 0,
+        description: "",
+      });
+    } else {
       form.reset({
         name: product.name,
         price: product.price,
         description: product.description,
       });
-    } else {
-      form.reset();
     }
   }, [product, form]);
 
@@ -86,10 +90,10 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <DialogHeader>
               <DialogTitle>
-                {product ? "Editar produto" : "Novo produto"}
+                {product ? "Edit product" : "New product"}
               </DialogTitle>
               <DialogDescription>
-                Preencha os dados do produto
+                {product ? "Edit a product" : "Create a new product"}
               </DialogDescription>
             </DialogHeader>
 
@@ -98,9 +102,9 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nome do produto" {...field} />
+                    <Input placeholder="Product name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,12 +116,12 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Preço</FormLabel>
+                  <FormLabel>Price</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       step="0.01"
-                      placeholder="Preço do produto"
+                      placeholder="Product price"
                       {...field}
                     />
                   </FormControl>
@@ -131,9 +135,9 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Descrição do produto" {...field} />
+                    <Input placeholder="Product description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,10 +146,10 @@ const DialogProduct = ({ open, onClose, onSuccess, product }: Props) => {
 
             <DialogFooter>
               <Button type="submit">
-                {product ? "Salvar alterações" : "Criar produto"}
+                {product ? "Update product" : "Create product"}
               </Button>
               <Button type="button" variant="outline" onClick={onClose}>
-                Cancelar
+                Cancel
               </Button>
             </DialogFooter>
           </form>

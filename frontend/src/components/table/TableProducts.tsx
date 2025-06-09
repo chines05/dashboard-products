@@ -13,9 +13,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type Props = {
   products: Product[];
+  onEdit?: (product: Product) => void;
+  onDelete?: (id: string) => void;
 };
 
-const TableProducts = ({ products }: Props) => {
+const TableProducts = ({ products, onEdit, onDelete }: Props) => {
   return (
     <Table>
       <TableHeader>
@@ -37,26 +39,43 @@ const TableProducts = ({ products }: Props) => {
               {product.description}
             </TableCell>
             <TableCell className="text-right">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost">
-                    <LucideEdit className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Edit</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost">
-                    <LucideTrash className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete</p>
-                </TooltipContent>
-              </Tooltip>
+              <div className="flex gap-2 justify-end">
+                {onEdit && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" onClick={() => onEdit(product)}>
+                        <LucideEdit className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Edit</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+                {onDelete && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          if (
+                            confirm(
+                              "Are you sure you want to delete this product?"
+                            )
+                          ) {
+                            onDelete(product.id);
+                          }
+                        }}
+                      >
+                        <LucideTrash className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Delete</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
             </TableCell>
           </TableRow>
         ))}
