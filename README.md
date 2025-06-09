@@ -27,15 +27,15 @@ O **Dashboard Products** é uma aplicação **full-stack** moderna para gerencia
 ## 🛠️ Tecnologias Utilizadas
 
 ### 🔧 Backend
-- **Node.js** `v18+` – Ambiente de execução
+- **Node.js** `v22+` – Ambiente de execução
 - **Express** – Framework web para rotas e middlewares
 - **Prisma ORM** – Mapeamento objeto-relacional para MongoDB
 - **MongoDB** – Banco de dados NoSQL flexível
 - **CORS** – Middleware para controle de acesso
 
 ### 🎨 Frontend
-- **Next.js** `v14` – Framework full-stack React
-- **React** `v18` – Biblioteca de UI declarativa
+- **Next.js** `v15.3.3` – Framework full-stack React
+- **React** `v19` – Biblioteca de UI declarativa
 - **shadcn/ui** – Componentes acessíveis e modernos
 - **Lucide Icons** – Ícones vetoriais simples e elegantes
 - **React Hot Toast** – Notificações rápidas e responsivas
